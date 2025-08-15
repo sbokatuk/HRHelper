@@ -8,34 +8,34 @@ ASP.NET Core (.NET 8) Razor Pages app for special requests with expiring links.
 export ADMIN_PASSWORD=admin
 cd src/HRHelper
 dotnet restore
-dotnet ef database update || dotnet run # initial migration is automatic via EnsureCreated/Migrate
 dotnet run
 ```
 
-Open http://localhost:5000 (or the shown URL), go to /admin, password from `ADMIN_PASSWORD`.
+Open http://localhost:5205 (or the shown URL), go to /admin.
 
 ## Configuration
 
-- ConnectionStrings:DefaultConnection — SQLite file path
-- Storage.Provider — Local | AzureBlob | Gcs
-  - Azure: ConnectionString, Container
-  - Gcs: Bucket
+- `ConnectionStrings:DefaultConnection` — SQLite path (Cloud Run uses /tmp/hrhelper.db automatically)
+- `Storage.Provider` — Local | AzureBlob | Gcs
+  - `Storage:Local:Root` (optional; defaults to temp folder in container)
+  - `Storage:Azure:*` or `Storage:Gcs:*`
+- Notifications (`Notifications:*`) — Email (SMTP) and Telegram
+- Admin password from env var `ADMIN_PASSWORD`
 
-## Azure (Container App / App Service via Docker)
+## Deploy
 
-Build and push image, then deploy:
+### Cloud Run + Firebase Hosting (GitHub Actions)
+- Add repo secrets:
+  - `GCP_SA_KEY`: JSON of a service account in your project
+  - `ADMIN_PASSWORD`: admin password
+- Update `.github/workflows/firebase-cloudrun.yml` env `GCP_PROJECT_ID` and region.
+- Trigger: create a tag `deploy-<anything>` or run workflow manually.
 
-```bash
-docker build -t hrhelper:latest -f Dockerfile .
-```
+### Azure Web App (Container)
+- Add repo secret `AZURE_WEBAPP_PUBLISH_PROFILE` (from Azure portal)
+- Optionally configure ACR (`ACR_USERNAME`, `ACR_PASSWORD`, `ACR_LOGIN_SERVER` in env)
+- Trigger: tag `deploy-azure-<anything>` or run manually.
 
-Configure `ADMIN_PASSWORD` and storage env vars in the service.
-
-## Firebase Hosting + Cloud Run
-
-- Build container and deploy to Cloud Run (or Cloud Run for Anthos) and point Firebase Hosting rewrite to the service URL. See `firebase.json`.
-
-## Notes
-
-- Admin can create three types of requests: Assignment, English Video, Questionnaire
-- Users submit results; admin sees completed submissions in /admin.
+## Security
+- Never commit keys or JSON creds. `.gitignore` excludes typical secrets/keys.
+- Prefer using env vars in CI/CD and platform secrets managers.

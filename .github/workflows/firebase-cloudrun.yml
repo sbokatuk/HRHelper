@@ -1,8 +1,9 @@
 name: Deploy to Cloud Run and Firebase Hosting
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    tags: [ 'deploy-*' ]
 
 jobs:
   build-and-deploy:

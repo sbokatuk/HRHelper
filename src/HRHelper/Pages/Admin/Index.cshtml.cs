@@ -22,8 +22,10 @@ namespace HRHelper.Pages.Admin
 
 		public async Task OnGet()
 		{
-			Requests = await _db.SpecialRequests.OrderByDescending(r => r.ExpiresAt).ToListAsync();
-			Submissions = await _db.Submissions.Include(s => s.SpecialRequest).OrderByDescending(s => s.SubmittedAt).Take(50).ToListAsync();
+			var reqs = await _db.SpecialRequests.AsNoTracking().ToListAsync();
+			Requests = reqs.OrderByDescending(r => r.ExpiresAt).ToList();
+			var subs = await _db.Submissions.Include(s => s.SpecialRequest).AsNoTracking().ToListAsync();
+			Submissions = subs.OrderByDescending(s => s.SubmittedAt).Take(50).ToList();
 		}
 
 		public string GetLink(SpecialRequest r)

@@ -6,14 +6,32 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Ensure we bind to the Cloud Run provided PORT when present
+var portEnv = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(portEnv))
+{
+	builder.WebHost.UseUrls($"http://0.0.0.0:{portEnv}");
+}
+
 builder.Services.AddRazorPages();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=hrhelper.db";
+// On Cloud Run, writeable path is /tmp. Use it for SQLite if using default.
+if (!string.IsNullOrWhiteSpace(portEnv) && connectionString.Trim().Equals("Data Source=hrhelper.db", StringComparison.OrdinalIgnoreCase))
+{
+	connectionString = "Data Source=/tmp/hrhelper.db";
+}
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddHttpClient();
 
 var storageProvider = builder.Configuration.GetValue<string>("Storage:Provider") ?? "Local";
+var localUploadsRoot = builder.Configuration.GetValue<string>("Storage:Local:Root");
+if (string.IsNullOrWhiteSpace(localUploadsRoot))
+{
+	// Default to temp dir in containerized environments
+	localUploadsRoot = Path.Combine(Path.GetTempPath(), "uploads");
+}
 if (storageProvider.Equals("AzureBlob", StringComparison.OrdinalIgnoreCase))
 {
 	builder.Services.AddSingleton<IStorageService>(sp => new AzureBlobStorageService(
@@ -27,8 +45,7 @@ else if (storageProvider.Equals("Gcs", StringComparison.OrdinalIgnoreCase))
 }
 else
 {
-	builder.Services.AddSingleton<IStorageService>(sp => new LocalFileStorageService(
-		Path.Combine(AppContext.BaseDirectory, "App_Data", "uploads")));
+	builder.Services.AddSingleton<IStorageService>(sp => new LocalFileStorageService(localUploadsRoot));
 }
 
 builder.Services.AddSingleton<IGitHubValidatorService, GitHubValidatorService>();
@@ -59,11 +76,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 // Serve uploaded files if using local storage
-var uploadsPath = Path.Combine(AppContext.BaseDirectory, "App_Data", "uploads");
-Directory.CreateDirectory(uploadsPath);
+Directory.CreateDirectory(localUploadsRoot);
 app.UseStaticFiles(new StaticFileOptions
 {
-	FileProvider = new PhysicalFileProvider(uploadsPath),
+	FileProvider = new PhysicalFileProvider(localUploadsRoot),
 	RequestPath = "/uploads"
 });
 

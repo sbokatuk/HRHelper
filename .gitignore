@@ -1,0 +1,29 @@
+# Build
+bin/
+obj/
+**/*.db
+
+# Rider/VSCode/VS
+.idea/
+.vscode/
+.vs/
+
+# Node
+node_modules/
+
+# Firebase/Secrets
+.firebase/
+.firebaserc.local
+
+# Local data
+src/HRHelper/App_Data/
+
+# Keys (do not commit!)
+keys/
+*.key
+*.pem
+*.p12
+*.json
+
+# macOS
+.DS_Store
