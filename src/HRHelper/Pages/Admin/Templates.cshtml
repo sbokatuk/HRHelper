@@ -1,0 +1,24 @@
+@page
+@model HRHelper.Pages.Admin.TemplatesModel
+@{
+	ViewData["Title"] = "Шаблоны опросов";
+}
+<h3>Существующие шаблоны</h3>
+<ul>
+	@foreach (var t in Model.Templates)
+	{
+		<li>@t.Name (@t.Id)</li>
+	}
+</ul>
+<hr />
+<h3>Создать/обновить</h3>
+<form method="post">
+	<label>Id (опционально для обновления) <input type="text" name="Id" /></label><br />
+	<label>Имя <input type="text" name="Name" /></label><br />
+	<label>Вопросы (JSON массив объектов QuestionItem) <textarea name="QuestionsJson" rows="10" cols="80"></textarea></label><br />
+	<button type="submit">Сохранить</button>
+</form>
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+	<p>@Model.Message</p>
+}

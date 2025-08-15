@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/sbokatuk/src/HRHelper/src/HRHelper/wwwroot/js/record.js",
+      "PackagePath": "staticwebassets/js/record.js"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.HRHelper.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.build.HRHelper.props",
+      "PackagePath": "build\\HRHelper.props"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.buildMultiTargeting.HRHelper.props",
+      "PackagePath": "buildMultiTargeting\\HRHelper.props"
+    },
+    {
+      "Id": "obj/Release/net8.0/staticwebassets/msbuild.buildTransitive.HRHelper.props",
+      "PackagePath": "buildTransitive\\HRHelper.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

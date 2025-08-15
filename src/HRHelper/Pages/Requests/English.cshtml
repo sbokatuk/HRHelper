@@ -1,0 +1,37 @@
+@page "{slug}"
+@model HRHelper.Pages.Requests.EnglishModel
+@{
+	ViewData["Title"] = Model.Special?.Title ?? "Тест английского";
+}
+@if (Model.Error != null)
+{
+	<p style="color:red">@Model.Error</p>
+}
+@if (Model.Special == null)
+{
+	<p>Ссылка недоступна.</p>
+}
+else
+{
+	<p>@Model.Payload.Prompt</p>
+	@if (!string.IsNullOrEmpty(Model.Payload.VideoUrl))
+	{
+		<video src="@Model.Payload.VideoUrl" controls width="640"></video>
+	}
+	<h4>Запишите ответ с камеры или загрузите видео</h4>
+	<video id="preview" autoplay muted playsinline width="480"></video><br />
+	<button type="button" id="start">Запись</button>
+	<button type="button" id="stop">Стоп</button>
+	<form method="post" enctype="multipart/form-data">
+		<input type="file" name="Video" id="videoInput" accept="video/*" />
+		<button type="submit">Отправить</button>
+	</form>
+	<script src="/js/record.js"></script>
+	<script>
+		initRecorder(document.getElementById('preview'), document.getElementById('start'), document.getElementById('stop'), document.getElementById('videoInput'));
+	</script>
+	@if (Model.Success)
+	{
+		<p>Отправлено. Спасибо!</p>
+	}
+}

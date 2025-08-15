@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "2MNKwAGdRah+snlB10sQ+6DWhPa64+tO8t4IW+hGv+g=",
+  "Source": "HRHelper",
+  "BasePath": "_content/HRHelper",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "HRHelper/wwwroot",
+      "Source": "HRHelper",
+      "ContentRoot": "/Users/sbokatuk/src/HRHelper/src/HRHelper/wwwroot/",
+      "BasePath": "_content/HRHelper",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/sbokatuk/src/HRHelper/src/HRHelper/wwwroot/js/record.js",
+      "SourceId": "HRHelper",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sbokatuk/src/HRHelper/src/HRHelper/wwwroot/",
+      "BasePath": "_content/HRHelper",
+      "RelativePath": "js/record.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/record.js"
+    }
+  ]
+}

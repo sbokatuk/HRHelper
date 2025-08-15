@@ -1,0 +1,53 @@
+name: Deploy to Cloud Run and Firebase Hosting
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker auth
+        run: gcloud auth configure-docker --quiet
+
+      - name: Build and push image to Artifact Registry
+        run: |
+          REGION=${{ env.CLOUD_RUN_REGION }}
+          IMAGE="${REGION}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/hrhelper/hrhelper:${{ github.sha }}"
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          docker build -t "$IMAGE" -f src/HRHelper/Dockerfile .
+          docker push "$IMAGE"
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy hrhelper \
+            --image "$IMAGE" \
+            --platform managed \
+            --region ${{ env.CLOUD_RUN_REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
+
+      - name: Deploy Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
+          projectId: ${{ env.GCP_PROJECT_ID }}
+          channelId: live
+    env:
+      GCP_PROJECT_ID: your-gcp-project-id
+      CLOUD_RUN_REGION: us-central1

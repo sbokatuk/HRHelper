@@ -1,0 +1,15 @@
+@page
+@model HRHelper.Pages.Admin.LoginModel
+@{
+	ViewData["Title"] = "Вход администратора";
+}
+<form method="post">
+	<label>Пароль администратора:
+		<input type="password" name="Password" />
+	</label>
+	<button type="submit">Войти</button>
+	@if (!string.IsNullOrEmpty(Model.Error))
+	{
+		<p style="color:red">@Model.Error</p>
+	}
+</form>

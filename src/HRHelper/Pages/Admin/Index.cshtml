@@ -1,0 +1,28 @@
+@page
+@model HRHelper.Pages.Admin.IndexModel
+@{
+	ViewData["Title"] = "Админка";
+}
+<p><a href="/admin/create">Создать специальный запрос</a> | <a href="/admin/templates">Шаблоны опросов</a></p>
+<h3>Ссылки специальных запросов</h3>
+<table>
+	<thead><tr><th>Заголовок</th><th>Тип</th><th>Ссылка</th><th>Истекает</th></tr></thead>
+	<tbody>
+	@foreach (var r in Model.Requests)
+	{
+		<tr>
+			<td>@r.Title</td>
+			<td>@r.Type</td>
+			<td><a href="@Model.GetLink(r)" target="_blank">@Model.GetLink(r)</a></td>
+			<td>@r.ExpiresAt.UtcDateTime.ToString("u")</td>
+		</tr>
+	}
+	</tbody>
+</table>
+<h3>Выполненные задания</h3>
+<ul>
+	@foreach (var s in Model.Submissions)
+	{
+		<li>@s.SubmittedAt.UtcDateTime.ToString("u") — @s.SpecialRequest?.Title</li>
+	}
+</ul>

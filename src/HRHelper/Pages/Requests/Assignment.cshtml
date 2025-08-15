@@ -1,0 +1,35 @@
+@page "{slug}"
+@model HRHelper.Pages.Requests.AssignmentModel
+@{
+	ViewData["Title"] = Model.Special?.Title ?? "Тестовое задание";
+}
+@if (Model.Error != null)
+{
+	<p style="color:red">@Model.Error</p>
+}
+@if (Model.Special == null)
+{
+	<p>Ссылка недоступна.</p>
+}
+else
+{
+	<p>@Model.Special.Description</p>
+	@if (!string.IsNullOrEmpty(Model.Payload.PdfUrl))
+	{
+		<p><a href="@Model.Payload.PdfUrl" target="_blank">Скачать PDF</a></p>
+	}
+	@if (!string.IsNullOrEmpty(Model.Payload.VideoUrl))
+	{
+		<video src="@Model.Payload.VideoUrl" controls width="640"></video>
+	}
+	<h4>Загрузите архив результата или укажите ссылку на публичный GitHub репозиторий</h4>
+	<form method="post" enctype="multipart/form-data">
+		<label>Архив <input type="file" name="Archive" accept=".zip,.7z,.tar,.gz" /></label><br />
+		<label>GitHub URL <input type="url" name="GitUrl" /></label><br />
+		<button type="submit">Отправить</button>
+	</form>
+	@if (Model.Success)
+	{
+		<p>Отправлено. Спасибо!</p>
+	}
+}

@@ -1,0 +1,7 @@
+bin
+obj
+**/*.db
+**/.vs
+**/.vscode
+**/node_modules
+**/App_Data/uploads

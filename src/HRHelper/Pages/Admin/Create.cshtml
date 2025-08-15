@@ -1,0 +1,34 @@
+@page
+@model HRHelper.Pages.Admin.CreateModel
+@{
+	ViewData["Title"] = "Создать специальный запрос";
+}
+<form method="post" enctype="multipart/form-data">
+	<label>Заголовок <input type="text" asp-for="Title" /></label><br />
+	<label>Описание <textarea asp-for="Description"></textarea></label><br />
+	<label>Тип 
+		<select asp-for="Type">
+			<option value="Assignment">Тестовое задание</option>
+			<option value="EnglishVideo">Тест английского (видео)</option>
+			<option value="Questionnaire">Опросник</option>
+		</select>
+	</label><br />
+	<label>Истекает (UTC) <input type="datetime-local" asp-for="ExpiresAt" /></label>
+	<hr />
+	<h4>Параметры типа</h4>
+	<div>
+		<label>Видео URL (опционально) <input type="text" name="VideoUrl" /></label><br />
+		<label>Текст задания/подсказки <textarea name="Prompt"></textarea></label><br />
+		<label>PDF (опционально) <input type="file" name="Pdf" accept="application/pdf" /></label><br />
+		<label>Шаблон опросника (GUID) или оставьте пустым <input type="text" name="TemplateId" /></label>
+	</div>
+	<button type="submit">Создать</button>
+	@if (!string.IsNullOrEmpty(Model.CreatedLink))
+	{
+		<p>Создано: <a href="@Model.CreatedLink" target="_blank">@Model.CreatedLink</a></p>
+	}
+	@if (!string.IsNullOrEmpty(Model.Error))
+	{
+		<p style="color:red">@Model.Error</p>
+	}
+</form>

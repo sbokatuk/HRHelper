@@ -1,0 +1,41 @@
+name: Deploy to Azure Web App (Container)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Log in to Azure Container Registry (if used)
+        if: env.ACR_LOGIN_SERVER != ''
+        uses: azure/docker-login@v2
+        with:
+          login-server: ${{ env.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push container image
+        run: |
+          IMAGE=${{ env.ACR_LOGIN_SERVER != '' && format('{0}/hrhelper:{1}', env.ACR_LOGIN_SERVER, github.sha) || format('hrhelper:{0}', github.sha) }}
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          docker build -t $IMAGE -f src/HRHelper/Dockerfile .
+          if [ -n "${{ env.ACR_LOGIN_SERVER }}" ]; then docker push $IMAGE; fi
+
+      - name: Azure Web App Deploy (Container)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          images: ${{ env.ACR_LOGIN_SERVER != '' && format('{0}/hrhelper:{1}', env.ACR_LOGIN_SERVER, github.sha) || format('hrhelper:{0}', github.sha) }}
+        env:
+          AZURE_WEBAPP_NAME: hrhelper-app
+          ACR_LOGIN_SERVER: ''
