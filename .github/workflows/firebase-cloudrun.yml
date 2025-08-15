@@ -6,13 +6,13 @@ on:
       os:
         description: "Runner OS (ubuntu-latest | macos-latest | windows-latest)"
         required: false
-        default: windows-latest
+        default: ["self-hosted","windows"]
   push:
     tags: [ 'v-*' ]
 
 jobs:
   deploy:
-    runs-on: ${{ inputs.os || 'windows-latest' }}
+    runs-on: ${{ inputs.os || '["self-hosted","windows"]' }}
     steps:
       - uses: actions/checkout@v4
 

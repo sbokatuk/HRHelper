@@ -8,16 +8,8 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.label }})
-    runs-on: ${{ fromJSON(matrix.runs_on) }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - label: self-hosted-windows
-            runs_on: '["self-hosted","windows"]'
-          - label: ubuntu-latest
-            runs_on: '"ubuntu-latest"'
+    name: Build
+    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,9 +25,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
-          key: ${{ matrix.label }}-nuget-${{ hashFiles('**/*.csproj') }}
+          key: nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
-            ${{ matrix.label }}-nuget-
+            nuget-
 
       - name: Restore (Windows)
         if: runner.os == 'Windows'
@@ -56,26 +48,14 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-${{ matrix.label }}
+          name: build
           path: |
             src/HRHelper/bin/Release
 
   test:
-    name: Test (${{ matrix.label }})
+    name: Test
     needs: build
-    runs-on: ${{ fromJSON(matrix.runs_on) }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - label: ubuntu-latest
-            runs_on: '"ubuntu-latest"'
-          - label: self-hosted-windows
-            runs_on: '["self-hosted","windows"]'
-          - label: self-hosted-linux
-            runs_on: '["self-hosted","linux"]'
-          - label: self-hosted-macos
-            runs_on: '["self-hosted","macos"]'
+    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
