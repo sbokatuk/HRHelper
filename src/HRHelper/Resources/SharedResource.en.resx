@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav_Home" xml:space="preserve"><value>Home</value></data>
+  <data name="Nav_Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Footer_Version" xml:space="preserve"><value>Version</value></data>
+  <data name="Footer_Copyright" xml:space="preserve"><value>© {0} bokatuk.com</value></data>
+  <data name="Admin_Title" xml:space="preserve"><value>Admin</value></data>
+  <data name="Admin_Create" xml:space="preserve"><value>Create special request</value></data>
+  <data name="Admin_Templates" xml:space="preserve"><value>Questionnaire templates</value></data>
+  <data name="Admin_Links" xml:space="preserve"><value>Special request links</value></data>
+  <data name="Admin_Table_Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Admin_Table_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Admin_Table_Link" xml:space="preserve"><value>Link</value></data>
+  <data name="Admin_Table_Expires" xml:space="preserve"><value>Expires</value></data>
+  <data name="Admin_Completed" xml:space="preserve"><value>Completed submissions</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>Admin Login</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>Admin password</value></data>
+  <data name="Login_Submit" xml:space="preserve"><value>Login</value></data>
+  <data name="Create_Title" xml:space="preserve"><value>Create special request</value></data>
+  <data name="Create_Request_Title" xml:space="preserve"><value>Title</value></data>
+  <data name="Create_Description" xml:space="preserve"><value>Description</value></data>
+  <data name="Create_Type" xml:space="preserve"><value>Type</value></data>
+  <data name="Create_Type_Assignment" xml:space="preserve"><value>Assignment</value></data>
+  <data name="Create_Type_English" xml:space="preserve"><value>English test (video)</value></data>
+  <data name="Create_Type_Questionnaire" xml:space="preserve"><value>Questionnaire</value></data>
+  <data name="Create_Expires" xml:space="preserve"><value>Expires (UTC)</value></data>
+  <data name="Create_TypeParams" xml:space="preserve"><value>Type parameters</value></data>
+  <data name="Create_VideoUrl" xml:space="preserve"><value>Video URL (optional)</value></data>
+  <data name="Create_Prompt" xml:space="preserve"><value>Prompt text</value></data>
+  <data name="Create_Pdf" xml:space="preserve"><value>PDF (optional)</value></data>
+  <data name="Create_TemplateId" xml:space="preserve"><value>Template Id (GUID, optional)</value></data>
+  <data name="Create_Submit" xml:space="preserve"><value>Create</value></data>
+  <data name="Templates_Title" xml:space="preserve"><value>Questionnaire templates</value></data>
+  <data name="Templates_Existing" xml:space="preserve"><value>Existing templates</value></data>
+  <data name="Templates_CreateUpdate" xml:space="preserve"><value>Create / Update</value></data>
+  <data name="Templates_Id" xml:space="preserve"><value>Id (optional, for update)</value></data>
+  <data name="Templates_Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Templates_Questions" xml:space="preserve"><value>Questions (JSON array of QuestionItem)</value></data>
+  <data name="Templates_Save" xml:space="preserve"><value>Save</value></data>
+  <data name="Assignment_Title" xml:space="preserve"><value>Assignment</value></data>
+  <data name="Assignment_LinkNA" xml:space="preserve"><value>Link is not available.</value></data>
+  <data name="Assignment_UploadOrGit" xml:space="preserve"><value>Upload result archive or provide a link to a public GitHub repository</value></data>
+  <data name="Assignment_Archive" xml:space="preserve"><value>Archive</value></data>
+  <data name="Assignment_Submit" xml:space="preserve"><value>Submit</value></data>
+  <data name="Assignment_Thanks" xml:space="preserve"><value>Submitted. Thank you!</value></data>
+  <data name="English_Title" xml:space="preserve"><value>English test</value></data>
+  <data name="English_LinkNA" xml:space="preserve"><value>Link is not available.</value></data>
+  <data name="English_RecordOrUpload" xml:space="preserve"><value>Record from webcam or upload a video</value></data>
+  <data name="English_Record" xml:space="preserve"><value>Record</value></data>
+  <data name="English_Stop" xml:space="preserve"><value>Stop</value></data>
+  <data name="English_Submit" xml:space="preserve"><value>Submit</value></data>
+  <data name="English_Thanks" xml:space="preserve"><value>Submitted. Thank you!</value></data>
+  <data name="Questionnaire_Title" xml:space="preserve"><value>Questionnaire</value></data>
+  <data name="Questionnaire_LinkNA" xml:space="preserve"><value>Link is not available.</value></data>
+  <data name="Questionnaire_Submit" xml:space="preserve"><value>Submit</value></data>
+  <data name="Questionnaire_Thanks" xml:space="preserve"><value>Submitted. Thank you!</value></data>
+</root>

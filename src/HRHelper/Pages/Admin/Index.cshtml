@@ -1,16 +1,18 @@
 @page
 @model HRHelper.Pages.Admin.IndexModel
 @using System.Reflection
+@using Microsoft.Extensions.Localization
 @inject IConfiguration Configuration
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
-	ViewData["Title"] = "Admin";
+	ViewData["Title"] = L["Admin_Title"];
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
-<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
-<p><a href="/admin/create">Create special request</a> | <a href="/admin/templates">Questionnaire templates</a></p>
-<h3>Special request links</h3>
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">@L["Footer_Version"]: @version</p>
+<p><a href="/admin/create">@L["Admin_Create"]</a> | <a href="/admin/templates">@L["Admin_Templates"]</a></p>
+<h3>@L["Admin_Links"]</h3>
 <table>
-	<thead><tr><th>Title</th><th>Type</th><th>Link</th><th>Expires</th></tr></thead>
+	<thead><tr><th>@L["Admin_Table_Title"]</th><th>@L["Admin_Table_Type"]</th><th>@L["Admin_Table_Link"]</th><th>@L["Admin_Table_Expires"]</th></tr></thead>
 	<tbody>
 	@foreach (var r in Model.Requests)
 	{

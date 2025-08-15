@@ -1,7 +1,9 @@
 @page "{slug}"
 @model HRHelper.Pages.Requests.QuestionnaireModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
-	ViewData["Title"] = Model.Special?.Title ?? "Questionnaire";
+	ViewData["Title"] = Model.Special?.Title ?? L["Questionnaire_Title"];
 }
 @if (Model.Error != null)
 {
@@ -9,7 +11,7 @@
 }
 @if (Model.Special == null)
 {
-	<p>Link is not available.</p>
+	<p>@L["Questionnaire_LinkNA"]</p>
 }
 else
 {
@@ -30,10 +32,10 @@ else
 				}
 			</div>
 		}
-		<button type="submit">Submit</button>
+		<button type="submit">@L["Questionnaire_Submit"]</button>
 	</form>
 	@if (Model.Success)
 	{
-		<p>Submitted. Thank you!</p>
+		<p>@L["Questionnaire_Thanks"]</p>
 	}
 }

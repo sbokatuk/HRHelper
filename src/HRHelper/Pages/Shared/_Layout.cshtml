@@ -1,9 +1,14 @@
 @using System.Reflection
+@using Microsoft.Extensions.Localization
 @inject IConfiguration Configuration
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
 	var title = ViewData["Title"] as string ?? "HRHelper";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 	var year = DateTimeOffset.UtcNow.Year;
+	var isAdmin = Context?.Request?.Path.StartsWithSegments("/admin") ?? false;
+	var logoHref = isAdmin ? "/admin" : "/";
+	var logoAria = isAdmin ? "Admin" : "Home";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -11,22 +16,32 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>@title</title>
+	<link rel="icon" type="image/svg+xml" href="/images/logopage.svg" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sakura.css/css/sakura.css" />
+	<link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
-	<header>
-		<h1>@title</h1>
-		<nav>
-			<a href="/">Home</a> | <a href="/admin">Admin</a>
-		</nav>
-		<hr />
+	<header class="site-header">
+		<a href="@logoHref" aria-label="@logoAria"><img class="logo" src="/images/logopage.svg" alt="Logo" /></a>
+		<a href="@logoHref" class="brand">@title</a>
 	</header>
+	<nav class="site-nav">
+		<div class="links">
+			<a href="/">@L["Nav_Home"]</a>
+			<a href="/admin">@L["Nav_Admin"]</a>
+		</div>
+		<div class="lang">
+			<a href="?culture=en">EN</a>
+			<a href="?culture=ru">RU</a>
+			<a href="?culture=ka">KA</a>
+		</div>
+	</nav>
 	<main>
 		@RenderBody()
 	</main>
-    <footer style="margin-top:2rem; padding-top:1rem; border-top:1px solid #eee; font-size:0.9em; color:#555">
-        <div>Version: @version</div>
-        <div>© @year bokatuk.com</div>
-    </footer>
+	<footer class="site-footer">
+		<div class="muted">@L["Footer_Version"]: @version</div>
+		<div class="muted">@string.Format(L["Footer_Copyright"], year)</div>
+	</footer>
 </body>
 </html>
