@@ -5,6 +5,8 @@
 @{
 	var title = ViewData["Title"] as string ?? "HRHelper";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
+	var dashIdx = version?.LastIndexOf('-') ?? -1;
+	var displayVersion = (dashIdx >= 0 && dashIdx < version.Length - 1) ? version.Substring(dashIdx + 1) : version;
 	var year = DateTimeOffset.UtcNow.Year;
 	var isAdmin = Context?.Request?.Path.StartsWithSegments("/admin") ?? false;
 	var logoHref = isAdmin ? "/admin" : "/";
@@ -34,13 +36,14 @@
 			<a href="?culture=en">EN</a>
 			<a href="?culture=ru">RU</a>
 			<a href="?culture=ka">KA</a>
+			<a href="?culture=uk">UK</a>
 		</div>
 	</nav>
 	<main>
 		@RenderBody()
 	</main>
 	<footer class="site-footer">
-		<div class="muted">@L["Footer_Version"]: @version</div>
+		<div class="muted">@L["Footer_Version"] - @displayVersion</div>
 		<div class="muted">@string.Format(L["Footer_Copyright"], year)</div>
 	</footer>
 </body>

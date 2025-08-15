@@ -7,8 +7,10 @@
 @{
 	ViewData["Title"] = L["Admin_Title"];
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
+	var dashIdx = version?.LastIndexOf('-') ?? -1;
+	var displayVersion = (dashIdx >= 0 && dashIdx < version.Length - 1) ? version.Substring(dashIdx + 1) : version;
 }
-<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">@L["Footer_Version"]: @version</p>
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">@L["Footer_Version"] - @displayVersion</p>
 <p><a href="/admin/create">@L["Admin_Create"]</a> | <a href="/admin/templates">@L["Admin_Templates"]</a></p>
 <h3>@L["Admin_Links"]</h3>
 <table>

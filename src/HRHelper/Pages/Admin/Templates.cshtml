@@ -7,8 +7,10 @@
 @{
 	ViewData["Title"] = L["Templates_Title"];
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
+	var dashIdx = version?.LastIndexOf('-') ?? -1;
+	var displayVersion = (dashIdx >= 0 && dashIdx < version.Length - 1) ? version.Substring(dashIdx + 1) : version;
 }
-<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">@L["Footer_Version"]: @version</p>
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">@L["Footer_Version"] - @displayVersion</p>
 <h3>@L["Templates_Existing"]</h3>
 <ul>
 	@foreach (var t in Model.Templates)
