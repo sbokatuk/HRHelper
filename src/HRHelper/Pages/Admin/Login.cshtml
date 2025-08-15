@@ -2,16 +2,18 @@
 @model HRHelper.Pages.Admin.LoginModel
 @using System.Reflection
 @inject IConfiguration Configuration
+
 @{
-	ViewData["Title"] = "Вход администратора";
+	ViewData["Title"] = "Admin Login";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
 <p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
+
 <form method="post">
-	<label>Пароль администратора:
+	<label>Admin password:
 		<input type="password" name="Password" />
 	</label>
-	<button type="submit">Войти</button>
+	<button type="submit">Login</button>
 	@if (!string.IsNullOrEmpty(Model.Error))
 	{
 		<p style="color:red">@Model.Error</p>

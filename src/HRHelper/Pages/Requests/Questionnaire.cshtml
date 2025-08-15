@@ -1,7 +1,7 @@
 @page "{slug}"
 @model HRHelper.Pages.Requests.QuestionnaireModel
 @{
-	ViewData["Title"] = Model.Special?.Title ?? "Опросник";
+	ViewData["Title"] = Model.Special?.Title ?? "Questionnaire";
 }
 @if (Model.Error != null)
 {
@@ -9,7 +9,7 @@
 }
 @if (Model.Special == null)
 {
-	<p>Ссылка недоступна.</p>
+	<p>Link is not available.</p>
 }
 else
 {
@@ -30,10 +30,10 @@ else
 				}
 			</div>
 		}
-		<button type="submit">Отправить</button>
+		<button type="submit">Submit</button>
 	</form>
 	@if (Model.Success)
 	{
-		<p>Отправлено. Спасибо!</p>
+		<p>Submitted. Thank you!</p>
 	}
 }

@@ -1,7 +1,7 @@
 @page "{slug}"
 @model HRHelper.Pages.Requests.EnglishModel
 @{
-	ViewData["Title"] = Model.Special?.Title ?? "Тест английского";
+	ViewData["Title"] = Model.Special?.Title ?? "English test";
 }
 @if (Model.Error != null)
 {
@@ -9,7 +9,7 @@
 }
 @if (Model.Special == null)
 {
-	<p>Ссылка недоступна.</p>
+	<p>Link is not available.</p>
 }
 else
 {
@@ -18,13 +18,13 @@ else
 	{
 		<video src="@Model.Payload.VideoUrl" controls width="640"></video>
 	}
-	<h4>Запишите ответ с камеры или загрузите видео</h4>
+	<h4>Record from webcam or upload a video</h4>
 	<video id="preview" autoplay muted playsinline width="480"></video><br />
-	<button type="button" id="start">Запись</button>
-	<button type="button" id="stop">Стоп</button>
+	<button type="button" id="start">Record</button>
+	<button type="button" id="stop">Stop</button>
 	<form method="post" enctype="multipart/form-data">
 		<input type="file" name="Video" id="videoInput" accept="video/*" />
-		<button type="submit">Отправить</button>
+		<button type="submit">Submit</button>
 	</form>
 	<script src="/js/record.js"></script>
 	<script>
@@ -32,6 +32,6 @@ else
 	</script>
 	@if (Model.Success)
 	{
-		<p>Отправлено. Спасибо!</p>
+		<p>Submitted. Thank you!</p>
 	}
 }

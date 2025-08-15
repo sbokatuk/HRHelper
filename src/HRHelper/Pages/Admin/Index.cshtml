@@ -3,14 +3,14 @@
 @using System.Reflection
 @inject IConfiguration Configuration
 @{
-	ViewData["Title"] = "Админка";
+	ViewData["Title"] = "Admin";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
 <p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
-<p><a href="/admin/create">Создать специальный запрос</a> | <a href="/admin/templates">Шаблоны опросов</a></p>
-<h3>Ссылки специальных запросов</h3>
+<p><a href="/admin/create">Create special request</a> | <a href="/admin/templates">Questionnaire templates</a></p>
+<h3>Special request links</h3>
 <table>
-	<thead><tr><th>Заголовок</th><th>Тип</th><th>Ссылка</th><th>Истекает</th></tr></thead>
+	<thead><tr><th>Title</th><th>Type</th><th>Link</th><th>Expires</th></tr></thead>
 	<tbody>
 	@foreach (var r in Model.Requests)
 	{
@@ -23,7 +23,7 @@
 	}
 	</tbody>
 </table>
-<h3>Выполненные задания</h3>
+<h3>Completed submissions</h3>
 <ul>
 	@foreach (var s in Model.Submissions)
 	{

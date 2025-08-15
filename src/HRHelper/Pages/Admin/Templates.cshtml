@@ -3,11 +3,11 @@
 @using System.Reflection
 @inject IConfiguration Configuration
 @{
-	ViewData["Title"] = "Шаблоны опросов";
+	ViewData["Title"] = "Questionnaire templates";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
 <p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
-<h3>Существующие шаблоны</h3>
+<h3>Existing templates</h3>
 <ul>
 	@foreach (var t in Model.Templates)
 	{
@@ -15,12 +15,12 @@
 	}
 </ul>
 <hr />
-<h3>Создать/обновить</h3>
+<h3>Create / Update</h3>
 <form method="post">
-	<label>Id (опционально для обновления) <input type="text" name="Id" /></label><br />
-	<label>Имя <input type="text" name="Name" /></label><br />
-	<label>Вопросы (JSON массив объектов QuestionItem) <textarea name="QuestionsJson" rows="10" cols="80"></textarea></label><br />
-	<button type="submit">Сохранить</button>
+	<label>Id (optional, for update) <input type="text" name="Id" /></label><br />
+	<label>Name <input type="text" name="Name" /></label><br />
+	<label>Questions (JSON array of QuestionItem) <textarea name="QuestionsJson" rows="10" cols="80"></textarea></label><br />
+	<button type="submit">Save</button>
 </form>
 @if (!string.IsNullOrEmpty(Model.Message))
 {

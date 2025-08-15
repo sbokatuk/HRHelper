@@ -1,6 +1,6 @@
 # scripts/setup-windows-runner.ps1
-# Устанавливает: Google Cloud SDK (gcloud), Node.js LTS, Firebase CLI (+опционально Docker Desktop)
-# Запускать PowerShell от имени администратора
+# Installs: Google Cloud SDK (gcloud), Node.js LTS, Firebase CLI (+optional Docker Desktop)
+# Run PowerShell as Administrator
 
 param(
   [switch]$InstallDocker = $false
@@ -9,7 +9,7 @@ param(
 function Ensure-Admin {
   $currentUser = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   if (-not $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Error "Запустите PowerShell от имени администратора."
+    Write-Error "Run PowerShell as Administrator."
     exit 1
   }
 }
@@ -27,12 +27,17 @@ function Install-WithWinget {
 function Ensure-WingetOrChoco {
   if (Cmd-Exists "winget") { return "winget" }
   if (-not (Cmd-Exists "choco")) {
-    Write-Host "Устанавливаю Chocolatey..."
+    Write-Host "Installing Chocolatey..."
     Set-ExecutionPolicy Bypass -Scope Process -Force
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
   }
   return "choco"
+}
+
+function Refresh-Path {
+  $global:env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" +
+                     [System.Environment]::GetEnvironmentVariable("Path","User")
 }
 
 Ensure-Admin
@@ -47,7 +52,7 @@ if (-not (Cmd-Exists "gcloud")) {
     choco install -y googlecloudsdk
   }
 } else {
-  Write-Host "gcloud уже установлен"
+  Write-Host "gcloud already installed"
 }
 
 # Node.js LTS
@@ -58,30 +63,42 @@ if (-not (Cmd-Exists "node")) {
     choco install -y nodejs-lts
   }
 } else {
-  Write-Host "Node.js уже установлен"
+  Write-Host "Node.js already installed"
 }
+
+# refresh PATH so npm is resolvable in current session
+Refresh-Path
 
 # Firebase CLI (npm global)
 if (-not (Cmd-Exists "firebase")) {
-  npm install -g firebase-tools
+  if (Cmd-Exists "npm") {
+    npm install -g firebase-tools
+  } else {
+    $npm = "C:\\Program Files\\nodejs\\npm.cmd"
+    if (Test-Path $npm) {
+      & $npm install -g firebase-tools
+    } else {
+      throw "npm not found. Reopen PowerShell or ensure Node.js is installed and in PATH."
+    }
+  }
 } else {
-  Write-Host "Firebase CLI уже установлен"
+  Write-Host "Firebase CLI already installed"
 }
 
-# Docker Desktop (опционально)
+# Docker Desktop (optional)
 if ($InstallDocker -and -not (Cmd-Exists "docker")) {
   if ($pkgMgr -eq "winget") {
     Install-WithWinget "Docker.DockerDesktop"
   } else {
     choco install -y docker-desktop
   }
-  Write-Host "Перезагрузите компьютер после установки Docker Desktop."
+  Write-Host "You may need to restart after installing Docker Desktop."
 }
 
-Write-Host "Проверка версий:"
+Write-Host "Versions:"
 if (Cmd-Exists "gcloud") { gcloud --version }
 if (Cmd-Exists "node") { node --version }
 if (Cmd-Exists "npm") { npm --version }
 if (Cmd-Exists "firebase") { firebase --version }
 if (Cmd-Exists "docker") { docker --version }
-Write-Host "Готово."
+Write-Host "Done."

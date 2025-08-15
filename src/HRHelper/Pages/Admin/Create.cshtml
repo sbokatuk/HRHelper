@@ -3,33 +3,33 @@
 @using System.Reflection
 @inject IConfiguration Configuration
 @{
-	ViewData["Title"] = "Создать специальный запрос";
+	ViewData["Title"] = "Create special request";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
 <p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
 <form method="post" enctype="multipart/form-data">
-	<label>Заголовок <input type="text" asp-for="Title" /></label><br />
-	<label>Описание <textarea asp-for="Description"></textarea></label><br />
-	<label>Тип 
+	<label>Title <input type="text" asp-for="Title" /></label><br />
+	<label>Description <textarea asp-for="Description"></textarea></label><br />
+	<label>Type 
 		<select asp-for="Type">
-			<option value="Assignment">Тестовое задание</option>
-			<option value="EnglishVideo">Тест английского (видео)</option>
-			<option value="Questionnaire">Опросник</option>
+			<option value="Assignment">Assignment</option>
+			<option value="EnglishVideo">English test (video)</option>
+			<option value="Questionnaire">Questionnaire</option>
 		</select>
 	</label><br />
-	<label>Истекает (UTC) <input type="datetime-local" asp-for="ExpiresAt" /></label>
+	<label>Expires (UTC) <input type="datetime-local" asp-for="ExpiresAt" /></label>
 	<hr />
-	<h4>Параметры типа</h4>
+	<h4>Type parameters</h4>
 	<div>
-		<label>Видео URL (опционально) <input type="text" name="VideoUrl" /></label><br />
-		<label>Текст задания/подсказки <textarea name="Prompt"></textarea></label><br />
-		<label>PDF (опционально) <input type="file" name="Pdf" accept="application/pdf" /></label><br />
-		<label>Шаблон опросника (GUID) или оставьте пустым <input type="text" name="TemplateId" /></label>
+		<label>Video URL (optional) <input type="text" name="VideoUrl" /></label><br />
+		<label>Prompt text <textarea name="Prompt"></textarea></label><br />
+		<label>PDF (optional) <input type="file" name="Pdf" accept="application/pdf" /></label><br />
+		<label>Template Id (GUID, optional) <input type="text" name="TemplateId" /></label>
 	</div>
-	<button type="submit">Создать</button>
+	<button type="submit">Create</button>
 	@if (!string.IsNullOrEmpty(Model.CreatedLink))
 	{
-		<p>Создано: <a href="@Model.CreatedLink" target="_blank">@Model.CreatedLink</a></p>
+		<p>Created: <a href="@Model.CreatedLink" target="_blank">@Model.CreatedLink</a></p>
 	}
 	@if (!string.IsNullOrEmpty(Model.Error))
 	{

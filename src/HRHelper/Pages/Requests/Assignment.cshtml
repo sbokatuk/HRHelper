@@ -1,7 +1,7 @@
 @page "{slug}"
 @model HRHelper.Pages.Requests.AssignmentModel
 @{
-	ViewData["Title"] = Model.Special?.Title ?? "Тестовое задание";
+	ViewData["Title"] = Model.Special?.Title ?? "Assignment";
 }
 @if (Model.Error != null)
 {
@@ -9,7 +9,7 @@
 }
 @if (Model.Special == null)
 {
-	<p>Ссылка недоступна.</p>
+	<p>Link is not available.</p>
 }
 else
 {
@@ -22,14 +22,14 @@ else
 	{
 		<video src="@Model.Payload.VideoUrl" controls width="640"></video>
 	}
-	<h4>Загрузите архив результата или укажите ссылку на публичный GitHub репозиторий</h4>
+	<h4>Upload result archive or provide a link to a public GitHub repository</h4>
 	<form method="post" enctype="multipart/form-data">
-		<label>Архив <input type="file" name="Archive" accept=".zip,.7z,.tar,.gz" /></label><br />
+		<label>Archive <input type="file" name="Archive" accept=".zip,.7z,.tar,.gz" /></label><br />
 		<label>GitHub URL <input type="url" name="GitUrl" /></label><br />
-		<button type="submit">Отправить</button>
+		<button type="submit">Submit</button>
 	</form>
 	@if (Model.Success)
 	{
-		<p>Отправлено. Спасибо!</p>
+		<p>Submitted. Thank you!</p>
 	}
 }
