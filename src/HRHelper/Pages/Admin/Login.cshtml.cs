@@ -20,7 +20,7 @@ namespace HRHelper.Pages.Admin
 		public async Task<IActionResult> OnPostAsync()
 		{
 			var envVar = HttpContext.RequestServices.GetRequiredService<IConfiguration>().GetValue<string>("Admin:PasswordEnvVar") ?? "ADMIN_PASSWORD";
-			var expected = Environment.GetEnvironmentVariable(envVar) ?? "admin";
+			var expected = (Environment.GetEnvironmentVariable(envVar) ?? "admin").Trim();
 			if (Password == expected)
 			{
 				var claims = new List<Claim> { new Claim(ClaimTypes.Name, "admin") };
