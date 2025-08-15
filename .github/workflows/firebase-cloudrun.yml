@@ -60,15 +60,23 @@ jobs:
         with:
           project_id: ${{ env.GCP_PROJECT_ID }}
 
-      - name: Deploy to Cloud Run (source)
+      - name: Build image with Cloud Build
+        shell: pwsh
+        run: |
+          $IMAGE = "$env:CLOUD_RUN_REGION-docker.pkg.dev/$env:GCP_PROJECT_ID/hrhelper/hrhelper:${{ github.sha }}"
+          echo "IMAGE=$IMAGE" | Out-File -FilePath $Env:GITHUB_ENV -Append
+          gcloud artifacts repositories describe hrhelper --location $env:CLOUD_RUN_REGION 2>$null
+          if (-not $?) { gcloud artifacts repositories create hrhelper --repository-format=docker --location $env:CLOUD_RUN_REGION --description "HRHelper images" }
+          gcloud builds submit --tag $IMAGE -f src/HRHelper/Dockerfile .
+
+      - name: Deploy to Cloud Run (image)
         shell: pwsh
         run: >-
           gcloud run deploy hrhelper
-          --source src/HRHelper
+          --image $env:IMAGE
           --region $env:CLOUD_RUN_REGION
           --platform managed
           --allow-unauthenticated
-          --set-build-env-vars "DOTNET_CLI_TELEMETRY_OPTOUT=1,NUGET_XMLDOC_MODE=skip"
           --set-env-vars
           ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD || secrets.prod.ADMIN_PASSWORD }},
           APP_VERSION=${{ github.ref_name }},
