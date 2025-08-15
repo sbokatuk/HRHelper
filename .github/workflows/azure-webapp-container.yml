@@ -58,3 +58,19 @@ jobs:
         env:
           AZURE_WEBAPP_NAME: hrhelper-app
           ACR_LOGIN_SERVER: ''
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          Notifications__Telegram__Enabled: ${{ vars.Notifications__Telegram__Enabled }}
+          Notifications__Telegram__ChatId: ${{ vars.Notifications__Telegram__ChatId }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          Notifications__Email__Enabled: ${{ vars.Notifications__Email__Enabled }}
+          Notifications__Email__From: ${{ vars.Notifications__Email__From }}
+          Notifications__Email__To: ${{ vars.Notifications__Email__To }}
+          Notifications__Email__Host: ${{ vars.Notifications__Email__Host }}
+          Notifications__Email__Port: ${{ vars.Notifications__Email__Port }}
+          Notifications__Email__Username: ${{ vars.Notifications__Email__Username }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          Storage__Provider: ${{ vars.Storage__Provider }}
+          Storage__Local__Root: ${{ vars.Storage__Local__Root }}
+          Storage__Azure__ConnectionString: ${{ secrets.Storage__Azure__ConnectionString }}
+          Storage__Azure__Container: ${{ vars.Storage__Azure__Container }}
+          Storage__Gcs__Bucket: ${{ vars.Storage__Gcs__Bucket }}
