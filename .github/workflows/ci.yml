@@ -38,4 +38,29 @@ jobs:
       - name: Build Release
         run: dotnet build HRHelper.sln -c Release --no-restore
 
+      - name: Test with coverage
+        run: dotnet test HRHelper.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory TestResults
+
+      - name: Report coverage summary
+        if: runner.os != 'Windows'
+        run: |
+          COVERAGE=$(find TestResults -name 'coverage.cobertura.xml' | head -n 1)
+          if [ -f "$COVERAGE" ]; then
+            echo "Cobertura: $COVERAGE"
+          fi
+
+      - name: Upload coverage to GitHub summary
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: TestResults/**/coverage.cobertura.xml
+          badge: true
+          format: markdown
+          output: both
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: TestResults
+
 

@@ -29,6 +29,16 @@ jobs:
         shell: pwsh
         run: dotnet build HRHelper.sln -c Release --no-restore
 
+      - name: Test with coverage
+        shell: pwsh
+        run: dotnet test HRHelper.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory TestResults
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ runner.os }}
+          path: TestResults
+
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
         with:
