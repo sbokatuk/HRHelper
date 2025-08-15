@@ -2,12 +2,17 @@ name: Deploy to Azure Web App (Container)
 
 on:
   workflow_dispatch:
+    inputs:
+      os:
+        description: "Runner OS (ubuntu-latest | macos-latest | windows-latest)"
+        required: false
+        default: windows-latest
   push:
     tags: [ 'deploy-azure-*' ]
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.os || 'windows-latest' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -15,6 +20,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore HRHelper.sln
+
+      - name: Build
+        shell: pwsh
+        run: dotnet build HRHelper.sln -c Release --no-restore
 
       - name: Log in to Azure Container Registry (if used)
         if: env.ACR_LOGIN_SERVER != ''
@@ -25,11 +38,16 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push container image
+        shell: pwsh
         run: |
-          IMAGE=${{ env.ACR_LOGIN_SERVER != '' && format('{0}/hrhelper:{1}', env.ACR_LOGIN_SERVER, github.sha) || format('hrhelper:{0}', github.sha) }}
-          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          if ('${{ env.ACR_LOGIN_SERVER }}' -ne '') {
+            $IMAGE = "${{ env.ACR_LOGIN_SERVER }}/hrhelper:${{ github.sha }}"
+          } else {
+            $IMAGE = "hrhelper:${{ github.sha }}"
+          }
+          echo "IMAGE=$IMAGE" | Out-File -FilePath $Env:GITHUB_ENV -Append
           docker build -t $IMAGE -f src/HRHelper/Dockerfile .
-          if [ -n "${{ env.ACR_LOGIN_SERVER }}" ]; then docker push $IMAGE; fi
+          if ('${{ env.ACR_LOGIN_SERVER }}' -ne '') { docker push $IMAGE }
 
       - name: Azure Web App Deploy (Container)
         uses: azure/webapps-deploy@v3
