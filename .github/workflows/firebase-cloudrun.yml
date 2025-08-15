@@ -68,7 +68,7 @@ jobs:
           --region $env:CLOUD_RUN_REGION
           --platform managed
           --allow-unauthenticated
-          --build-env-vars DOTNET_CLI_TELEMETRY_OPTOUT=1,NUGET_XMLDOC_MODE=skip
+          --set-build-env-vars "DOTNET_CLI_TELEMETRY_OPTOUT=1,NUGET_XMLDOC_MODE=skip"
           --set-env-vars
           ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD || secrets.prod.ADMIN_PASSWORD }},
           APP_VERSION=${{ github.ref_name }},
