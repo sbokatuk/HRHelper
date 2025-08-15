@@ -2,6 +2,7 @@
 bin/
 obj/
 **/*.db
+TestResults/
 
 # Rider/VSCode/VS
 .idea/
