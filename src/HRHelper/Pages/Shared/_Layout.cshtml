@@ -1,5 +1,7 @@
 @using System.Reflection
+@using Microsoft.Extensions.Localization
 @inject IConfiguration Configuration
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
 	var title = ViewData["Title"] as string ?? "HRHelper";
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
@@ -17,7 +19,14 @@
 	<header>
 		<h1>@title</h1>
 		<nav>
-			<a href="/">Home</a> | <a href="/admin">Admin</a>
+			<a href="/">@L["Nav_Home"]</a> | <a href="/admin">@L["Nav_Admin"]</a>
+			<span style="float:right">
+				<a href="?culture=en">EN</a>
+				|
+				<a href="?culture=ru">RU</a>
+				|
+				<a href="?culture=ka">KA</a>
+			</span>
 		</nav>
 		<hr />
 	</header>
@@ -25,8 +34,8 @@
 		@RenderBody()
 	</main>
     <footer style="margin-top:2rem; padding-top:1rem; border-top:1px solid #eee; font-size:0.9em; color:#555">
-        <div>Version: @version</div>
-        <div>© @year bokatuk.com</div>
+        <div>@L["Footer_Version"]: @version</div>
+        <div>@string.Format(L["Footer_Copyright"], year)</div>
     </footer>
 </body>
 </html>

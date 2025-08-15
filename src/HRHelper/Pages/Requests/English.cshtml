@@ -1,7 +1,9 @@
 @page "{slug}"
 @model HRHelper.Pages.Requests.EnglishModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
-	ViewData["Title"] = Model.Special?.Title ?? "English test";
+	ViewData["Title"] = Model.Special?.Title ?? L["English_Title"];
 }
 @if (Model.Error != null)
 {
@@ -9,7 +11,7 @@
 }
 @if (Model.Special == null)
 {
-	<p>Link is not available.</p>
+	<p>@L["English_LinkNA"]</p>
 }
 else
 {
@@ -18,13 +20,13 @@ else
 	{
 		<video src="@Model.Payload.VideoUrl" controls width="640"></video>
 	}
-	<h4>Record from webcam or upload a video</h4>
+	<h4>@L["English_RecordOrUpload"]</h4>
 	<video id="preview" autoplay muted playsinline width="480"></video><br />
-	<button type="button" id="start">Record</button>
-	<button type="button" id="stop">Stop</button>
+	<button type="button" id="start">@L["English_Record"]</button>
+	<button type="button" id="stop">@L["English_Stop"]</button>
 	<form method="post" enctype="multipart/form-data">
 		<input type="file" name="Video" id="videoInput" accept="video/*" />
-		<button type="submit">Submit</button>
+		<button type="submit">@L["English_Submit"]</button>
 	</form>
 	<script src="/js/record.js"></script>
 	<script>
@@ -32,6 +34,6 @@ else
 	</script>
 	@if (Model.Success)
 	{
-		<p>Submitted. Thank you!</p>
+		<p>@L["English_Thanks"]</p>
 	}
 }

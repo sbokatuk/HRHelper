@@ -1,19 +1,22 @@
 @page
 @model HRHelper.Pages.Admin.LoginModel
 @using System.Reflection
+@using Microsoft.Extensions.Localization
 @inject IConfiguration Configuration
+@inject IStringLocalizer<HRHelper.SharedResource> L
+
 
 @{
-	ViewData["Title"] = "Admin Login";
+	ViewData["Title"] = L["Login_Title"];
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
 <p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
 
 <form method="post">
-	<label>Admin password:
+	<label>@L["Login_Password"]:
 		<input type="password" name="Password" />
 	</label>
-	<button type="submit">Login</button>
+	<button type="submit">@L["Login_Submit"]</button>
 	@if (!string.IsNullOrEmpty(Model.Error))
 	{
 		<p style="color:red">@Model.Error</p>

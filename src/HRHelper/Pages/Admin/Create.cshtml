@@ -1,35 +1,37 @@
 @page
 @model HRHelper.Pages.Admin.CreateModel
 @using System.Reflection
+@using Microsoft.Extensions.Localization
 @inject IConfiguration Configuration
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
-	ViewData["Title"] = "Create special request";
+	ViewData["Title"] = L["Create_Title"];
 	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
-<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">@L["Footer_Version"]: @version</p>
 <form method="post" enctype="multipart/form-data">
-	<label>Title <input type="text" asp-for="Title" /></label><br />
-	<label>Description <textarea asp-for="Description"></textarea></label><br />
-	<label>Type 
+	<label>@L["Create_Request_Title"] <input type="text" asp-for="Title" /></label><br />
+	<label>@L["Create_Description"] <textarea asp-for="Description"></textarea></label><br />
+	<label>@L["Create_Type"] 
 		<select asp-for="Type">
-			<option value="Assignment">Assignment</option>
-			<option value="EnglishVideo">English test (video)</option>
-			<option value="Questionnaire">Questionnaire</option>
+			<option value="Assignment">@L["Create_Type_Assignment"]</option>
+			<option value="EnglishVideo">@L["Create_Type_English"]</option>
+			<option value="Questionnaire">@L["Create_Type_Questionnaire"]</option>
 		</select>
 	</label><br />
-	<label>Expires (UTC) <input type="datetime-local" asp-for="ExpiresAt" /></label>
+	<label>@L["Create_Expires"] <input type="datetime-local" asp-for="ExpiresAt" /></label>
 	<hr />
-	<h4>Type parameters</h4>
+	<h4>@L["Create_TypeParams"]</h4>
 	<div>
-		<label>Video URL (optional) <input type="text" name="VideoUrl" /></label><br />
-		<label>Prompt text <textarea name="Prompt"></textarea></label><br />
-		<label>PDF (optional) <input type="file" name="Pdf" accept="application/pdf" /></label><br />
-		<label>Template Id (GUID, optional) <input type="text" name="TemplateId" /></label>
+		<label>@L["Create_VideoUrl"] <input type="text" name="VideoUrl" /></label><br />
+		<label>@L["Create_Prompt"] <textarea name="Prompt"></textarea></label><br />
+		<label>@L["Create_Pdf"] <input type="file" name="Pdf" accept="application/pdf" /></label><br />
+		<label>@L["Create_TemplateId"] <input type="text" name="TemplateId" /></label>
 	</div>
-	<button type="submit">Create</button>
+	<button type="submit">@L["Create_Submit"]</button>
 	@if (!string.IsNullOrEmpty(Model.CreatedLink))
 	{
-		<p>Created: <a href="@Model.CreatedLink" target="_blank">@Model.CreatedLink</a></p>
+		<p>@("Created:") <a href="@Model.CreatedLink" target="_blank">@Model.CreatedLink</a></p>
 	}
 	@if (!string.IsNullOrEmpty(Model.Error))
 	{

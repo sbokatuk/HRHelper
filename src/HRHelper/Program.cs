@@ -3,6 +3,8 @@ using HRHelper.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,21 @@ if (!string.IsNullOrWhiteSpace(portEnv))
 }
 
 builder.Services.AddRazorPages();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddControllers().AddViewLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "en", "ru", "ka" };
+    options.SetDefaultCulture("en");
+    options.AddSupportedCultures(supportedCultures);
+    options.AddSupportedUICultures(supportedCultures);
+    options.RequestCultureProviders = new IRequestCultureProvider[]
+    {
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider(),
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=hrhelper.db";
 // On Cloud Run, writeable path is /tmp. Use it for SQLite if using default.
@@ -84,6 +101,26 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
+
+// Persist culture via cookie if provided in query string
+app.Use(async (context, next) =>
+{
+    var culture = context.Request.Query["culture"].ToString();
+    if (!string.IsNullOrWhiteSpace(culture))
+    {
+        var cookieValue = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture));
+        context.Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, cookieValue, new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddYears(1),
+            IsEssential = true,
+            HttpOnly = false,
+            Secure = context.Request.IsHttps
+        });
+    }
+    await next();
+});
+
+app.UseRequestLocalization();
 
 app.UseAuthentication();
 app.UseAuthorization();

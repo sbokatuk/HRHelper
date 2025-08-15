@@ -1,5 +1,7 @@
 @page
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
 	ViewData["Title"] = "HRHelper";
 }
-<p>Special requests service (Assignment, English Video, Questionnaire). Go to the <a href="/admin">Admin</a> to create links.</p>
+<p>Special requests service (Assignment, English Video, Questionnaire). Go to the <a href="/admin">@L["Nav_Admin"]</a> to create links.</p>

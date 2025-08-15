@@ -1,7 +1,9 @@
 @page "{slug}"
 @model HRHelper.Pages.Requests.AssignmentModel
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<HRHelper.SharedResource> L
 @{
-	ViewData["Title"] = Model.Special?.Title ?? "Assignment";
+	ViewData["Title"] = Model.Special?.Title ?? L["Assignment_Title"];
 }
 @if (Model.Error != null)
 {
@@ -9,7 +11,7 @@
 }
 @if (Model.Special == null)
 {
-	<p>Link is not available.</p>
+	<p>@L["Assignment_LinkNA"]</p>
 }
 else
 {
@@ -22,14 +24,14 @@ else
 	{
 		<video src="@Model.Payload.VideoUrl" controls width="640"></video>
 	}
-	<h4>Upload result archive or provide a link to a public GitHub repository</h4>
+	<h4>@L["Assignment_UploadOrGit"]</h4>
 	<form method="post" enctype="multipart/form-data">
-		<label>Archive <input type="file" name="Archive" accept=".zip,.7z,.tar,.gz" /></label><br />
+		<label>@L["Assignment_Archive"] <input type="file" name="Archive" accept=".zip,.7z,.tar,.gz" /></label><br />
 		<label>GitHub URL <input type="url" name="GitUrl" /></label><br />
-		<button type="submit">Submit</button>
+		<button type="submit">@L["Assignment_Submit"]</button>
 	</form>
 	@if (Model.Success)
 	{
-		<p>Submitted. Thank you!</p>
+		<p>@L["Assignment_Thanks"]</p>
 	}
 }
