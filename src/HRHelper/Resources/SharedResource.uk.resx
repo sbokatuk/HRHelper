@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav_Home" xml:space="preserve"><value>Додому</value></data>
+  <data name="Nav_Admin" xml:space="preserve"><value>Адмін</value></data>
+  <data name="Footer_Version" xml:space="preserve"><value>Версія</value></data>
+  <data name="Footer_Copyright" xml:space="preserve"><value>© {0} bokatuk.com</value></data>
+  <data name="Admin_Title" xml:space="preserve"><value>Адмін</value></data>
+  <data name="Admin_Create" xml:space="preserve"><value>Створити спецпосилання</value></data>
+  <data name="Admin_Templates" xml:space="preserve"><value>Шаблони опитувальника</value></data>
+  <data name="Admin_Links" xml:space="preserve"><value>Спецпосилання</value></data>
+  <data name="Admin_Table_Title" xml:space="preserve"><value>Заголовок</value></data>
+  <data name="Admin_Table_Type" xml:space="preserve"><value>Тип</value></data>
+  <data name="Admin_Table_Link" xml:space="preserve"><value>Посилання</value></data>
+  <data name="Admin_Table_Expires" xml:space="preserve"><value>Спливає</value></data>
+  <data name="Admin_Completed" xml:space="preserve"><value>Виконані відправки</value></data>
+  <data name="Login_Title" xml:space="preserve"><value>Вхід адміністратора</value></data>
+  <data name="Login_Password" xml:space="preserve"><value>Пароль адміністратора</value></data>
+  <data name="Login_Submit" xml:space="preserve"><value>Увійти</value></data>
+  <data name="Create_Title" xml:space="preserve"><value>Створити спецпосилання</value></data>
+  <data name="Create_Request_Title" xml:space="preserve"><value>Заголовок</value></data>
+  <data name="Create_Description" xml:space="preserve"><value>Опис</value></data>
+  <data name="Create_Type" xml:space="preserve"><value>Тип</value></data>
+  <data name="Create_Type_Assignment" xml:space="preserve"><value>Завдання</value></data>
+  <data name="Create_Type_English" xml:space="preserve"><value>Англійська (відео)</value></data>
+  <data name="Create_Type_Questionnaire" xml:space="preserve"><value>Опитувальник</value></data>
+  <data name="Create_Expires" xml:space="preserve"><value>Спливає (UTC)</value></data>
+  <data name="Create_TypeParams" xml:space="preserve"><value>Параметри типу</value></data>
+  <data name="Create_VideoUrl" xml:space="preserve"><value>URL відео (необовʼязково)</value></data>
+  <data name="Create_Prompt" xml:space="preserve"><value>Підказка</value></data>
+  <data name="Create_Pdf" xml:space="preserve"><value>PDF (необовʼязково)</value></data>
+  <data name="Create_TemplateId" xml:space="preserve"><value>Id шаблону (GUID, необовʼязково)</value></data>
+  <data name="Create_Submit" xml:space="preserve"><value>Створити</value></data>
+  <data name="Templates_Title" xml:space="preserve"><value>Шаблони опитувальника</value></data>
+  <data name="Templates_Existing" xml:space="preserve"><value>Існуючі шаблони</value></data>
+  <data name="Templates_CreateUpdate" xml:space="preserve"><value>Створити / Оновити</value></data>
+  <data name="Templates_Id" xml:space="preserve"><value>Id (необовʼязково для оновлення)</value></data>
+  <data name="Templates_Name" xml:space="preserve"><value>Назва</value></data>
+  <data name="Templates_Questions" xml:space="preserve"><value>Питання (JSON масив обʼєктів QuestionItem)</value></data>
+  <data name="Templates_Save" xml:space="preserve"><value>Зберегти</value></data>
+  <data name="Assignment_Title" xml:space="preserve"><value>Завдання</value></data>
+  <data name="Assignment_LinkNA" xml:space="preserve"><value>Посилання недоступне.</value></data>
+  <data name="Assignment_UploadOrGit" xml:space="preserve"><value>Завантажте архів або вкажіть посилання на публічний GitHub-репозиторій</value></data>
+  <data name="Assignment_Archive" xml:space="preserve"><value>Архів</value></data>
+  <data name="Assignment_Submit" xml:space="preserve"><value>Надіслати</value></data>
+  <data name="Assignment_Thanks" xml:space="preserve"><value>Надіслано. Дякуємо!</value></data>
+  <data name="English_Title" xml:space="preserve"><value>Англійська</value></data>
+  <data name="English_LinkNA" xml:space="preserve"><value>Посилання недоступне.</value></data>
+  <data name="English_RecordOrUpload" xml:space="preserve"><value>Запишіть із камери або завантажте відео</value></data>
+  <data name="English_Record" xml:space="preserve"><value>Запис</value></data>
+  <data name="English_Stop" xml:space="preserve"><value>Стоп</value></data>
+  <data name="English_Submit" xml:space="preserve"><value>Надіслати</value></data>
+  <data name="English_Thanks" xml:space="preserve"><value>Надіслано. Дякуємо!</value></data>
+  <data name="Questionnaire_Title" xml:space="preserve"><value>Опитувальник</value></data>
+  <data name="Questionnaire_LinkNA" xml:space="preserve"><value>Посилання недоступне.</value></data>
+  <data name="Questionnaire_Submit" xml:space="preserve"><value>Надіслати</value></data>
+  <data name="Questionnaire_Thanks" xml:space="preserve"><value>Надіслано. Дякуємо!</value></data>
+</root>

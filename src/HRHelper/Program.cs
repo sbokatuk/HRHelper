@@ -20,7 +20,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.AddControllers().AddViewLocalization();
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    var supportedCultures = new[] { "en", "ru", "ka" };
+    var supportedCultures = new[] { "en", "ru", "ka", "uk" };
     options.SetDefaultCulture("en");
     options.AddSupportedCultures(supportedCultures);
     options.AddSupportedUICultures(supportedCultures);
