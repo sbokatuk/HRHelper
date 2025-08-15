@@ -31,19 +31,14 @@ jobs:
         shell: pwsh
         run: dotnet build HRHelper.sln -c Release --no-restore
 
-      - name: Fail if GCP_SA_KEY missing
-        if: ${{ (secrets.GCP_SA_KEY == '' || secrets.GCP_SA_KEY == null) && (secrets.prod.GCP_SA_KEY == '' || secrets.prod.GCP_SA_KEY == null) }}
+      - name: Verify required secrets
+        env:
+          SA: ${{ secrets.GCP_SA_KEY || secrets.prod.GCP_SA_KEY }}
+          ADMIN: ${{ secrets.ADMIN_PASSWORD || secrets.prod.ADMIN_PASSWORD }}
         shell: pwsh
         run: |
-          Write-Error 'Missing secret GCP_SA_KEY (repo or env:prod)'
-          exit 1
-
-      - name: Fail if ADMIN_PASSWORD missing
-        if: ${{ (secrets.ADMIN_PASSWORD == '' || secrets.ADMIN_PASSWORD == null) && (secrets.prod.ADMIN_PASSWORD == '' || secrets.prod.ADMIN_PASSWORD == null) }}
-        shell: pwsh
-        run: |
-          Write-Error 'Missing secret ADMIN_PASSWORD (repo or env:prod)'
-          exit 1
+          if (-not "$env:SA") { Write-Error 'Missing GCP_SA_KEY (repo or env:prod)'; exit 1 }
+          if (-not "$env:ADMIN") { Write-Error 'Missing ADMIN_PASSWORD (repo or env:prod)'; exit 1 }
 
       - name: Test with coverage
         shell: pwsh
@@ -96,7 +91,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.GCP_SA_KEY }}
+          firebaseServiceAccount: ${{ secrets.GCP_SA_KEY || secrets.prod.GCP_SA_KEY }}
           projectId: ${{ env.GCP_PROJECT_ID }}
           channelId: live
     env:
