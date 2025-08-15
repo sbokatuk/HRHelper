@@ -8,7 +8,7 @@ on:
         required: false
         default: windows-latest
   push:
-    tags: [ 'deploy-*' ]
+    tags: [ 'v-*' ]
 
 jobs:
   deploy:
