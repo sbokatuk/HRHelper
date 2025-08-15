@@ -1,8 +1,12 @@
 @page
 @model HRHelper.Pages.Admin.LoginModel
+@using System.Reflection
+@inject IConfiguration Configuration
 @{
 	ViewData["Title"] = "Вход администратора";
+	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
 <form method="post">
 	<label>Пароль администратора:
 		<input type="password" name="Password" />

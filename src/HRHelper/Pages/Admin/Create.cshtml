@@ -1,8 +1,12 @@
 @page
 @model HRHelper.Pages.Admin.CreateModel
+@using System.Reflection
+@inject IConfiguration Configuration
 @{
 	ViewData["Title"] = "Создать специальный запрос";
+	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
 <form method="post" enctype="multipart/form-data">
 	<label>Заголовок <input type="text" asp-for="Title" /></label><br />
 	<label>Описание <textarea asp-for="Description"></textarea></label><br />

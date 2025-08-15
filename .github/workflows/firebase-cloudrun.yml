@@ -46,6 +46,7 @@ jobs:
           --allow-unauthenticated
           --set-env-vars
           ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }},
+          APP_VERSION=${{ github.ref_name }},
           Notifications__Telegram__Enabled=${{ vars.Notifications__Telegram__Enabled }},
           Notifications__Telegram__ChatId=${{ vars.Notifications__Telegram__ChatId }},
           TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }},

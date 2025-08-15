@@ -2,12 +2,21 @@
 set -euo pipefail
 
 # Usage:
-# PROJECT_ID=hrhelper-57162 REGION=us-central1 ADMIN_PASSWORD=xxxx SA_KEY=/path/key.json ./scripts/deploy-firebase-cloudrun.sh
+# PROJECT_ID=hrhelper-57162 REGION=us-central1 ADMIN_PASSWORD=xxxx SA_KEY=/path/key.json APP_VERSION=v-1.0.0 ./scripts/deploy-firebase-cloudrun.sh
 
 : "${PROJECT_ID:?PROJECT_ID is required}"
 : "${REGION:=us-central1}"
 : "${ADMIN_PASSWORD:?ADMIN_PASSWORD is required}"
 : "${SA_KEY:?SA_KEY is required (path to service account JSON)}"
+
+# Derive APP_VERSION if not provided: prefer GITHUB_REF_NAME, then latest tag, else timestamp
+if [ -z "${APP_VERSION:-}" ]; then
+  if [ -n "${GITHUB_REF_NAME:-}" ]; then
+    APP_VERSION="$GITHUB_REF_NAME"
+  else
+    APP_VERSION=$(git describe --tags --always 2>/dev/null || date +%Y%m%d%H%M)
+  fi
+fi
 
 if ! command -v gcloud >/dev/null 2>&1; then
   echo "gcloud not found. Install Google Cloud SDK." >&2
@@ -47,7 +56,7 @@ gcloud run deploy hrhelper \
   --platform managed \
   --region "$REGION" \
   --allow-unauthenticated \
-  --set-env-vars ADMIN_PASSWORD="$ADMIN_PASSWORD"
+  --set-env-vars ADMIN_PASSWORD="$ADMIN_PASSWORD",APP_VERSION="$APP_VERSION"
 
 # Update Firebase project mapping
 if command -v jq >/dev/null 2>&1; then

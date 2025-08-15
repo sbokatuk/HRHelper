@@ -4,12 +4,14 @@
 #   -Region us-central1
 #   -AdminPassword "...."
 #   -ServiceAccountKeyPath "C:\path\sa.json"
+#   -AppVersion "v-1.0.0" (необязательно; по умолчанию берётся имя тега или метка времени)
 
 param(
   [Parameter(Mandatory=$true)][string]$ProjectId,
   [Parameter()][string]$Region = "us-central1",
   [Parameter(Mandatory=$true)][string]$AdminPassword,
-  [Parameter(Mandatory=$true)][string]$ServiceAccountKeyPath
+  [Parameter(Mandatory=$true)][string]$ServiceAccountKeyPath,
+  [Parameter()][string]$AppVersion
 )
 
 function Require-Cmd($name) {
@@ -27,8 +29,19 @@ if (-not (Test-Path $ServiceAccountKeyPath)) {
   exit 1
 }
 
-$env:GOOGLE_APPLICATION_CREDENTIALS = $ServiceAccountKeyPath
+if (-not $AppVersion -or $AppVersion.Trim() -eq "") {
+  if ($env:GITHUB_REF_NAME) {
+    $AppVersion = $env:GITHUB_REF_NAME
+  } else {
+    # попытка вытащить из git tag; если не получится — метка времени
+    try {
+      $tag = (git describe --tags --always 2>$null)
+      if ($tag) { $AppVersion = $tag } else { $AppVersion = (Get-Date -Format 'yyyyMMddHHmm') }
+    } catch { $AppVersion = (Get-Date -Format 'yyyyMMddHHmm') }
+  }
+}
 
+$env:GOOGLE_APPLICATION_CREDENTIALS = $ServiceAccountKeyPath
 Write-Host "Аутентификация сервисного аккаунта..."
 gcloud auth activate-service-account --key-file "$ServiceAccountKeyPath"
 
@@ -49,9 +62,9 @@ gcloud run deploy hrhelper `
   --region "$Region" `
   --platform managed `
   --allow-unauthenticated `
-  --set-env-vars ADMIN_PASSWORD="$AdminPassword"
+  --set-env-vars ADMIN_PASSWORD="$AdminPassword",APP_VERSION="$AppVersion"
 
 Write-Host "Деплой Firebase Hosting (rewrite на Cloud Run)..."
 firebase --project "$ProjectId" deploy --only hosting --non-interactive
 
-Write-Host "Готово."
+Write-Host "Готово. Версия: $AppVersion"

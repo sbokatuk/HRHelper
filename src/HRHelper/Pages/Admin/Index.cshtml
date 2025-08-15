@@ -1,8 +1,12 @@
 @page
 @model HRHelper.Pages.Admin.IndexModel
+@using System.Reflection
+@inject IConfiguration Configuration
 @{
 	ViewData["Title"] = "Админка";
+	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
 <p><a href="/admin/create">Создать специальный запрос</a> | <a href="/admin/templates">Шаблоны опросов</a></p>
 <h3>Ссылки специальных запросов</h3>
 <table>

@@ -1,8 +1,12 @@
 @page
 @model HRHelper.Pages.Admin.TemplatesModel
+@using System.Reflection
+@inject IConfiguration Configuration
 @{
 	ViewData["Title"] = "Шаблоны опросов";
+	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
 }
+<p style="font-size:0.85em;color:#555;margin-top:-0.5rem">Version: @version</p>
 <h3>Существующие шаблоны</h3>
 <ul>
 	@foreach (var t in Model.Templates)
