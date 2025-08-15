@@ -1,10 +1,9 @@
-# build
+# build (context should be src/HRHelper)
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ./HRHelper.sln ./
-COPY ./src/HRHelper/ ./src/HRHelper/
-RUN dotnet restore HRHelper.sln
-RUN dotnet publish src/HRHelper/HRHelper.csproj -c Release -o /app/publish
+COPY . .
+RUN dotnet restore HRHelper.csproj
+RUN dotnet publish HRHelper.csproj -c Release -o /app/publish
 
 # runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
