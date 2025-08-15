@@ -3,6 +3,7 @@ bin/
 obj/
 **/*.db
 TestResults/
+wiki/
 
 # Rider/VSCode/VS
 .idea/

@@ -4,8 +4,9 @@
 @inject IStringLocalizer<HRHelper.SharedResource> L
 @{
 	var title = ViewData["Title"] as string ?? "HRHelper";
-	var version = Configuration["APP_VERSION"] ?? Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev";
-	var dashIdx = version?.LastIndexOf('-') ?? -1;
+	var rawVer = (Configuration?["APP_VERSION"] as string) ?? (Assembly.GetEntryAssembly()?.GetName().Version?.ToString() ?? "dev");
+	var version = rawVer;
+	var dashIdx = version.LastIndexOf('-');
 	var displayVersion = (dashIdx >= 0 && dashIdx < version.Length - 1) ? version.Substring(dashIdx + 1) : version;
 	var year = DateTimeOffset.UtcNow.Year;
 	var isAdmin = Context?.Request?.Path.StartsWithSegments("/admin") ?? false;
