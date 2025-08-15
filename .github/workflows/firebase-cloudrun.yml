@@ -13,6 +13,8 @@ on:
 jobs:
   deploy:
     runs-on: ${{ inputs.os || 'windows-latest' }}
+    environment:
+      name: prod
     steps:
       - uses: actions/checkout@v4
 
@@ -29,6 +31,12 @@ jobs:
         shell: pwsh
         run: dotnet build HRHelper.sln -c Release --no-restore
 
+      - name: Verify required secrets
+        shell: pwsh
+        run: |
+          if (-not "${{ secrets.GCP_SA_KEY }}" -and -not "${{ secrets.prod.GCP_SA_KEY }}") { Write-Error 'Missing secret GCP_SA_KEY (repo or env:prod)'; exit 1 }
+          if (-not "${{ secrets.ADMIN_PASSWORD }}" -and -not "${{ secrets.prod.ADMIN_PASSWORD }}") { Write-Error 'Missing secret ADMIN_PASSWORD (repo or env:prod)'; exit 1 }
+
       - name: Test with coverage
         shell: pwsh
         run: dotnet test HRHelper.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory TestResults
@@ -42,7 +50,7 @@ jobs:
       - name: Google Auth
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.GCP_SA_KEY || secrets.prod.GCP_SA_KEY }}
 
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
@@ -58,7 +66,7 @@ jobs:
           --platform managed
           --allow-unauthenticated
           --set-env-vars
-          ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }},
+          ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD || secrets.prod.ADMIN_PASSWORD }},
           APP_VERSION=${{ github.ref_name }},
           Notifications__Telegram__Enabled=${{ vars.Notifications__Telegram__Enabled }},
           Notifications__Telegram__ChatId=${{ vars.Notifications__Telegram__ChatId }},
