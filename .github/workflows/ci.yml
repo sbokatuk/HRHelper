@@ -49,7 +49,8 @@ jobs:
             echo "Cobertura: $COVERAGE"
           fi
 
-      - name: Upload coverage to GitHub summary
+      - name: Upload coverage to GitHub summary (Linux only)
+        if: runner.os == 'Linux'
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: TestResults/**/coverage.cobertura.xml
