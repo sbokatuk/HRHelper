@@ -37,10 +37,20 @@ jobs:
           restore-keys: |
             ${{ matrix.label }}-nuget-
 
-      - name: Restore
+      - name: Restore (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: dotnet restore HRHelper.sln
+      - name: Restore (non-Windows)
+        if: runner.os != 'Windows'
         run: dotnet restore HRHelper.sln
 
-      - name: Build Release
+      - name: Build Release (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: dotnet build HRHelper.sln -c Release --no-restore
+      - name: Build Release (non-Windows)
+        if: runner.os != 'Windows'
         run: dotnet build HRHelper.sln -c Release --no-restore
 
       - name: Upload build artifacts
@@ -77,13 +87,28 @@ jobs:
         env:
           DOTNET_INSTALL_DIR: ${{ runner.os == 'Windows' && format('{0}\dotnet', runner.temp) || format('{0}/dotnet', runner.temp) }}
 
-      - name: Restore
+      - name: Restore (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: dotnet restore HRHelper.sln
+      - name: Restore (non-Windows)
+        if: runner.os != 'Windows'
         run: dotnet restore HRHelper.sln
 
-      - name: Build Release
+      - name: Build Release (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: dotnet build HRHelper.sln -c Release --no-restore
+      - name: Build Release (non-Windows)
+        if: runner.os != 'Windows'
         run: dotnet build HRHelper.sln -c Release --no-restore
 
-      - name: Test with coverage
+      - name: Test with coverage (Windows)
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: dotnet test HRHelper.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory TestResults
+      - name: Test with coverage (non-Windows)
+        if: runner.os != 'Windows'
         run: dotnet test HRHelper.sln -c Release --no-build --collect:"XPlat Code Coverage" --results-directory TestResults
 
       - name: Report coverage summary

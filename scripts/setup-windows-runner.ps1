@@ -31,8 +31,10 @@ function Ensure-WingetOrChoco {
     Set-ExecutionPolicy Bypass -Scope Process -Force
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    Refresh-Path
   }
-  return "choco"
+  if (Cmd-Exists "choco") { return "choco" }
+  throw "No package manager detected (winget/choco). Install one and rerun."
 }
 
 function Refresh-Path {
@@ -87,10 +89,12 @@ if (-not (Cmd-Exists "firebase")) {
 
 # Docker Desktop (optional)
 if ($InstallDocker -and -not (Cmd-Exists "docker")) {
-  if ($pkgMgr -eq "winget") {
+  if (Cmd-Exists "winget") {
     Install-WithWinget "Docker.DockerDesktop"
-  } else {
+  } elseif (Cmd-Exists "choco") {
     choco install -y docker-desktop
+  } else {
+    Write-Error "Neither winget nor choco found. Install a package manager and rerun."
   }
   Write-Host "You may need to restart after installing Docker Desktop."
 }
