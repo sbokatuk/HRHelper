@@ -49,5 +49,5 @@ jobs:
           projectId: ${{ env.GCP_PROJECT_ID }}
           channelId: live
     env:
-      GCP_PROJECT_ID: your-gcp-project-id
+      GCP_PROJECT_ID: hrhelper-57162
       CLOUD_RUN_REGION: us-central1
